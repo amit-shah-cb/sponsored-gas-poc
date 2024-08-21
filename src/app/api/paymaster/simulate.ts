@@ -15,6 +15,7 @@ export async function simulateAssetChanges(userOp:UserOperation<"v0.6">){
                 // this is not very safe but we can use it for testing
                
                 "input": userOp.callData,
+                "from":userOp.sender,
                 },
                 "latest"
             ]});
