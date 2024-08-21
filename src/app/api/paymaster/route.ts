@@ -1,12 +1,14 @@
 import { paymasterClient } from "../config";
 import { willSponsor } from "../utils";
+import { simulateAssetChanges } from "./alchemy";
 
 export async function POST(r: Request) {
-  console.log("Calling paymaster route with userOp");
   const req = await r.json();
   const method = req.method;
   const [userOp, entrypoint, chainId] = req.params;
-  
+  console.log(userOp, entrypoint, chainId);
+
+  const result = await simulateAssetChanges(userOp);
   const sponsorable = await willSponsor({
     chainId: parseInt(chainId),
     entrypoint,
