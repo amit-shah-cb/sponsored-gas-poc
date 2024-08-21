@@ -35,34 +35,27 @@ export function ApproveZeroEx() {
   
   const [swapTx, setSwapTx] = useState([] as any[]); 
   
-  const fetchSwap = async () => {
-    const data = await fetch('/api/swap');
+  const fetchSwap = async (address:`0x${string}`) => {
+    const data = await fetch(`/api/swap?fromAddress=${address}`);
     console.log(data);
-    const swapTx:any =  await data.json();
-    return swapTx;
-  }
-
-  useEffect(() => {
-    if(swapTx.length === 0){     
-      fetchSwap().then((st)=>{
-        let batchTxs:any[] = [
-          {
-            address: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
-            abi: ERC20Abi,
-            functionName: "approve",
-            args: ["0xDef1C0ded9bec7F1a1670819833240f027b25EfF", 100_000_000],
-          },st];
-          console.log(batchTxs);
-        setSwapTx([...swapTx, ...batchTxs]);
-      })
-    }
-  }, [swapTx]);
+    const swapTxs:any[] =  await data.json();        
+    setSwapTx([...swapTxs]);
+  } 
   
   //TODO viem decode 
   return (
     <div>
       <h2>Swap0x</h2>
+      <button onClick={() => {
+        setSwapTx([]);
+        return fetchSwap(account.address as `0x${string}`)
+      }}>Fetch Updated Swap</button>
       <div>
+        <div>
+          {swapTx.map((tx, i) => {
+            return JSON.stringify({"functionName":tx.functionName, "data":tx.args})
+          })}
+        </div>
         <TransactButton
           id="swap-button"
           contracts={swapTx}

@@ -58,7 +58,6 @@ export function TransactButton<
       <button
         onClick={() => {
           console.log(rest);
-          debugger;
           return writeContracts(rest);          
         }}
         disabled={status == "pending"}
