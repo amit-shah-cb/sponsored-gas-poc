@@ -34,17 +34,27 @@ export function ApproveZeroEx() {
   }, [availableCapabilities, account.chainId]);
   
   const [swapTx, setSwapTx] = useState([] as any[]); 
+  
+  const fetchSwap = async () => {
+    const data = await fetch('/api/swap');
+    console.log(data);
+    const swapTx:any =  await data.json();
+    return swapTx;
+  }
 
   useEffect(() => {
-    if(swapTx.length === 0){
-      let data:any[] = [
-        {
-          address: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
-          abi: ERC20Abi,
-          functionName: "approve",
-          args: ["0xDef1C0ded9bec7F1a1670819833240f027b25EfF", 100_000_000],
-        }];
-      setSwapTx([...swapTx, ...data]);
+    if(swapTx.length === 0){     
+      fetchSwap().then((st)=>{
+        let batchTxs:any[] = [
+          {
+            address: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            abi: ERC20Abi,
+            functionName: "approve",
+            args: ["0xDef1C0ded9bec7F1a1670819833240f027b25EfF", 100_000_000],
+          },st];
+          console.log(batchTxs);
+        setSwapTx([...swapTx, ...batchTxs]);
+      })
     }
   }, [swapTx]);
   
