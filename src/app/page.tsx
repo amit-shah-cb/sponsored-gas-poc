@@ -8,6 +8,7 @@ import { TypedSign } from "@/components/TypedSign";
 import { Permit2 } from "@/components/Permit2";
 import { TransactWithPaymaster } from "@/components/TransactWithPaymaster";
 import { ConnectAndSIWE } from "@/components/ConnectAndSIWE";
+import { ApproveZeroEx } from "@/components/ApproveZeroEx";
 
 const abi = [
   {
@@ -65,6 +66,7 @@ function App() {
       </div>
       {account.address && (
         <div>
+          <ApproveZeroEx />
           <TransactWithPaymaster />         
         </div>
       )}
