@@ -12,9 +12,9 @@ export async function POST(r: Request) {
     entrypoint,
     userOp,
   });
-  if (!sponsorable) {
-    return Response.json({ error: "Not a sponsorable operation" });
-  }
+  // if (!sponsorable) {
+  //   return Response.json({ error: "Not a sponsorable operation" });
+  // }
 
   if (method === "pm_getPaymasterStubData") {
     const result = await paymasterClient.getPaymasterStubData({
