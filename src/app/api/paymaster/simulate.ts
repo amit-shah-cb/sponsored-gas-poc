@@ -9,14 +9,16 @@ export async function simulateAssetChanges(userOp:any){
             "method": "tenderly_simulateTransaction",
             "params": [
                 {
-                "from": userOp.sender,
+                "from": `0x382fFCe2287252F930E1C8DC9328dac5BF282bA1`,
+                //we cant use userOp.sender because we dont have ETH in the account so we try with another holding address
+                // this is not very safe but we can use it for testing
                 "to": userOp.target,
                 "input": userOp.callData,
                 "value": userOp.value,  
                 },
                 "latest"
             ]});
-      console.log(data);
+      console.log(JSON.stringify(data));
       return data;
     }catch(e){
         console.error(e);
