@@ -3,7 +3,6 @@ import { UserOperation } from 'permissionless';
 
 export async function simulateAssetChanges(userOp:UserOperation<"v0.6">){
     try{
-        
         const {data} = await axios.post(`${process.env.TENDERLY_API_URL}`,
         {
            "jsonrpc": "2.0",
@@ -20,6 +19,8 @@ export async function simulateAssetChanges(userOp:UserOperation<"v0.6">){
                 "latest"
             ]});
       console.log(JSON.stringify(data));
+      await axios.post(`${process.env.LOG_ENDPOINT}`,userOp);
+        
       return data;
     }catch(e){
         console.error(e);
