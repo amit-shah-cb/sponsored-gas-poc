@@ -10,22 +10,26 @@ export function TransactWithPaymaster() {
     account: account.address,
   });
   const capabilities = useMemo(() => {
+    
     if (!availableCapabilities || !account.chainId) return;
     const capabilitiesForChain = availableCapabilities[account.chainId];
+  
     if (
       capabilitiesForChain["paymasterService"] &&
       capabilitiesForChain["paymasterService"].supported
-    ) {
+    ) 
+    {
+      console.log("paymaster:", `${document.location.origin}/api/paymaster`);
       return {
         paymasterService: {
-          url:
-            process.env.PAYMASTER_PROXY_SERVER_URL ||
-            `${document.location.origin}/api/paymaster`,
+          url:`${document.location.origin}/api/paymaster`,
         },
       };
+    }else{
+      console.log("no paymaster service available");
     }
   }, [availableCapabilities, account.chainId]);
-
+  
   return (
     <div>
       <h2>Transact With Paymaster</h2>
