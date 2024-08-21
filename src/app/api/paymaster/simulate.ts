@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { UserOperation } from 'permissionless';
 
-export async function simulateAssetChanges(userOp:any){
+export async function simulateAssetChanges(userOp:UserOperation<"v0.6">){
     try{
+        
         const {data} = await axios.post(`${process.env.TENDERLY_API_URL}`,
         {
            "jsonrpc": "2.0",
@@ -9,12 +11,11 @@ export async function simulateAssetChanges(userOp:any){
             "method": "tenderly_simulateTransaction",
             "params": [
                 {
-                "from": `0x382fFCe2287252F930E1C8DC9328dac5BF282bA1`,
+                "to": userOp.sender,
                 //we cant use userOp.sender because we dont have ETH in the account so we try with another holding address
                 // this is not very safe but we can use it for testing
-                "to": userOp.target,
+               
                 "input": userOp.callData,
-                "value": userOp.value,  
                 },
                 "latest"
             ]});
