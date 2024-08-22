@@ -1,4 +1,5 @@
 import { paymasterClient } from "../config";
+import { ToToken } from "../swap/route";
 import { willSponsor } from "../utils";
 import { simulateAssetChanges } from "./simulate";
 
@@ -8,15 +9,32 @@ export async function POST(r: Request) {
   const [userOp, entrypoint, chainId] = req.params;
   console.log(userOp, entrypoint, chainId);
 
-  const result = await simulateAssetChanges(userOp);
-  const sponsorable = await willSponsor({
-    chainId: parseInt(chainId),
-    entrypoint,
-    userOp,
-  });
-  // if (!sponsorable) {
-  //   return Response.json({ error: "Not a sponsorable operation" });
-  // }
+  const simResult = await simulateAssetChanges(userOp);
+  let sponsorable = false;
+  for(let i=0;i<simResult.result.logs.length;i++){
+    const log = simResult.result.logs[i];
+    if(log.name === "Transfer" && log.inputs && log.inputs.length ===3 && 
+      //to address is the beneficiary wallet address
+    log.inputs[1].name === "to" &&
+    log.inputs[1].toLowerCase() === "0x382ffce2287252f930e1c8dc9328dac5bf282ba1"
+    //TODO: check the amount is non-zero
+    //&& BigInt(log.inputs[2] as string) > BigInt(0)
+    //TODO: we should also check the token address and price to see how fee we collected in $ amount    
+    ){
+      sponsorable = true;
+      console.log("can sponsor this operation");
+      break;
+    }
+  }
+
+  // const sponsorable = await willSponsor({
+  //   chainId: parseInt(chainId),
+  //   entrypoint,
+  //   userOp,
+  // });
+  if (!sponsorable) {
+    return Response.json({ error: "Not a sponsorable operation" });
+  }
 
   if (method === "pm_getPaymasterStubData") {
     const result = await paymasterClient.getPaymasterStubData({

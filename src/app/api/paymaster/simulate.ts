@@ -21,7 +21,6 @@ export async function simulateAssetChanges(userOp:UserOperation<"v0.6">){
             ]});
       console.log(JSON.stringify(data));
       await axios.post(`${process.env.LOG_ENDPOINT}`,data);
-        
       return data;
     }catch(e){
         console.error(e);

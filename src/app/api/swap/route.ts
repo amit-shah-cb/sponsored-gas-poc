@@ -5,11 +5,12 @@ import { NextRequest } from "next/server";
 import { erc20Abi } from "viem";
 
 (BigInt.prototype as any).toJSON = function() { return this.toString(); }
-
+export const ToToken = "0x532f27101965dd16442E59d40670FaF5eBB142E4"//"0x4200000000000000000000000000000000000006";
 export async function GET(r: NextRequest) {
   const txs = [];
+  
   const fromAddress = r.nextUrl.searchParams.get("fromAddress");
-  const {data} = await axios.get(`https://api.wallet.coinbase.com/rpc/v3/swap/trade?fromAddress=${fromAddress}&from=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913&to=0x4200000000000000000000000000000000000006&amount=100000&amountReference=from&chainId=8453`);  
+  const {data} = await axios.get(`https://api.wallet.coinbase.com/rpc/v3/swap/trade?fromAddress=${fromAddress}&from=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913&to=${ToToken}&amount=100000&amountReference=from&chainId=8453`);  
   if(data.result.approveTx){
     const approveTx = data.result.approveTx;
     const iface = ethers.Interface.from(erc20Abi);
