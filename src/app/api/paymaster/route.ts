@@ -1,7 +1,8 @@
 import { paymasterClient } from "../config";
-import { ToToken } from "../swap/route";
 import { willSponsor } from "../utils";
 import { simulateAssetChanges } from "./simulate";
+
+const ToToken = "0x532f27101965dd16442E59d40670FaF5eBB142E4"//"0x4200000000000000000000000000000000000006";
 
 export async function POST(r: Request) {
   const req = await r.json();
