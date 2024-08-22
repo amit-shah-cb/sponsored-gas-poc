@@ -17,7 +17,7 @@ export async function POST(r: Request) {
     if(log.name === "Transfer" && log.inputs && log.inputs.length ===3 && 
       //to address is the beneficiary wallet address
     log.inputs[1].name === "to" &&
-    log.inputs[1].toLowerCase() === "0x382ffce2287252f930e1c8dc9328dac5bf282ba1"
+    (log.inputs[1].value as string).toLowerCase() === "0x382ffce2287252f930e1c8dc9328dac5bf282ba1"
     //TODO: check the amount is non-zero
     //&& BigInt(log.inputs[2] as string) > BigInt(0)
     //TODO: we should also check the token address and price to see how fee we collected in $ amount    

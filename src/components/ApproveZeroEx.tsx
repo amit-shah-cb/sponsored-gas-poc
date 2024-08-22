@@ -35,8 +35,13 @@ export function ApproveZeroEx() {
   
   const [swapTx, setSwapTx] = useState([] as any[]); 
   
-  const fetchSwap = async (address:`0x${string}`) => {
-    const data = await fetch(`/api/swap?fromAddress=${address}`);
+  const fetchSwap = async (address:`0x${string}`, enableFees:boolean) => {
+    let baseUrl = `/api/swap?fromAddress=${address}`
+    if(enableFees===true){
+      console.log("enabling fees");
+      baseUrl = baseUrl+"&enableFees=true";
+    }
+    const data = await fetch(baseUrl);
     console.log(data);
     const swapTxs:any[] =  await data.json();        
     setSwapTx([...swapTxs]);
@@ -48,8 +53,12 @@ export function ApproveZeroEx() {
       <h2>Swap0x</h2>
       <button onClick={() => {
         setSwapTx([]);
-        return fetchSwap(account.address as `0x${string}`)
+        return fetchSwap(account.address as `0x${string}`,false)
       }}>Fetch Updated Swap</button>
+       <button onClick={() => {
+        setSwapTx([]);
+        return fetchSwap(account.address as `0x${string}`,true)
+      }}>Fetch Updated Swap With Fees</button>
       <div>
         <div>
           {swapTx.map((tx, i) => {
