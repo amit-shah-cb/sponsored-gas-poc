@@ -4,7 +4,7 @@ import { willSponsor } from "../utils";
 import { simulateAssetChanges } from "./simulate";
 
 const ToToken = "0x532f27101965dd16442E59d40670FaF5eBB142E4"//"0x4200000000000000000000000000000000000006";
-const BENEFICIARY_WALLET = (process.env.BENEFICIARY_WALLET as string).toLowerCase() || "0x382ffce2287252f930e1c8dc9328dac5bf282ba1";
+const BENEFICIARY_WALLET = (process.env.BENEFICIARY_WALLET  || "0x382ffce2287252f930e1c8dc9328dac5bf282ba1").toLowerCase();
 
 export async function POST(r: Request) {
   const req = await r.json();
